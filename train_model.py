@@ -24,6 +24,13 @@ def load_data_from_warehouse():
     return df
 
 def train_and_track():
+    # TELL LOCAL SCRIPT TO TALK TO DOCKER CONTAINER MLFLOW
+    mlflow.set_tracking_uri("http://localhost:5000")
+    
+    # Set the name of our machine learning experiment
+    mlflow.set_experiment("Smart_eFuse_Predictive_Maintenance")
+    
+    print("Fetching data from the warehouse...")
     # Set the name of our machine learning experiment in MLflow
     mlflow.set_experiment("Smart_eFuse_Predictive_Maintenance")
 

@@ -1,5 +1,5 @@
-
 services:
+  # 1. The Data Warehouse (PostgreSQL)
   db:
     image: postgres:15
     container_name: sensor_warehouse
@@ -11,6 +11,39 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - factory_network
+
+  # 2. The Experiment Tracker & Model Registry (MLflow)
+  mlflow_server:
+    image: ghcr.io/mlflow/mlflow:v2.11.3
+    container_name: mlflow_server
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow_data:/mlflow
+    # UPDATED BELOW: Moves mlflow.db inside the shared /mlflow folder
+    command: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:////mlflow/mlflow.db --artifacts-destination /mlflow --serve-artifacts
+    networks:
+      - factory_network
+# 3. The Production Prediction Microservice (FastAPI)
+  api:
+    build: .
+    container_name: prediction_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - mlflow_data:/mlflow  # 👈 ADD THIS LINE: Gives FastAPI access to MLflow's storage
+    depends_on:
+      - db
+      - mlflow_server
+    networks:
+      - factory_network
 
 volumes:
   pgdata:
+  mlflow_data:
+
+networks:
+  factory_network:
+    driver: bridge
