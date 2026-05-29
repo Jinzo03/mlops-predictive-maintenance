@@ -42,7 +42,7 @@ def load_latest_model():
         # Correct MLflow URI format format is runs:/<run_id>/<artifact_path>
         model_uri = f"runs:/{latest_run_id}/predictive_maintenance_rf_model"
         
-        print(f"📦 Attempting to load model from URI: {model_uri}")
+        print(f" Attempting to load model from URI: {model_uri}")
         model = mlflow.pyfunc.load_model(model_uri)
         print(" Model successfully loaded into memory and ready for inference!")
         

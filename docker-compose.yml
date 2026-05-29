@@ -33,7 +33,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - mlflow_data:/mlflow  # 👈 ADD THIS LINE: Gives FastAPI access to MLflow's storage
+      - mlflow_data:/mlflow
     depends_on:
       - db
       - mlflow_server
