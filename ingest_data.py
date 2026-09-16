@@ -53,7 +53,7 @@ def simulate_sensor_stream():
             # Introduce a rare anomaly (fault = 1) if current spikes too high
             if current > 11.5 and random.random() > 0.7:
                 fault = 1
-                print("⚠️ [ANOMALY DETECTED] Simulating electrical fault context!")
+                print("[ANOMALY DETECTED] Simulating electrical fault context!")
 
             current_time = datetime.datetime.now()
 
